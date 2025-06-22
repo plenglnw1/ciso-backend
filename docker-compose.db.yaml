@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://ciso_user:ciso_password@postgres:5432/ciso_lab_booking
+    depends_on:
+      - postgres
+    volumes:
+      - .:/lab-backend
+      - /lab-backend/node_modules
+
+  postgres:
+    image: postgres:16
+    container_name: local-postgres
+    ports:
+      - "8888:5432"
+    environment:
+      POSTGRES_USER: ciso_user
+      POSTGRES_PASSWORD: ciso_password
+      POSTGRES_DB: ciso_lab_booking
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
